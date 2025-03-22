@@ -37,3 +37,47 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
+// Import ES Modules
+import dotenv from 'dotenv';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import sequelize from './src/config/database.js';
+import productRoutes from './src/Routes/productRoutes.js';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(cors({
+    origin: process.env.VITE_API_URL, // Allow frontend URL from .env
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true // Allow credentials
+}));
+
+// Routes
+app.use('/api', productRoutes); // Prefix routes with /api
+
+app.get('/', (req: Request, res: Response) => {
+    res.send("Hello, Node.js Backend is running!");
+});
+
+// Error handling middleware
+app.use((req: Request, res: Response) => {
+    res.status(404).send("Route not found");
+});
+
+// DB Connection
+sequelize
+    .sync({ alter: true })  // Auto-updates table structure without data loss
+    .then(() => console.log("✅ Database Synced"))
+    .catch((err) => console.error("❌ Sync Error:", err));
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+});
