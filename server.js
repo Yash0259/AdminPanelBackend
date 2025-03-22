@@ -13,14 +13,14 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: process.env.VITE_API_URL || "*", // Allow frontend URL from .env
+    origin: process.env.VITE_API_URL , // Allow frontend URL from .env
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: "Content-Type,Authorization"
 }));
 
 
 // Routes
-app.use('/api/products', productRoutes);
+app.use('/', productRoutes);
 
 app.get('/', (req, res) => {
     res.send("Hello, Node.js Backend is running!");
