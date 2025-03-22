@@ -20,7 +20,7 @@ app.use(cors({
 
 
 // Routes
-app.use("/products", productRoutes);
+app.use("/", productRoutes);
 app.get('/', (req, res) => {
     res.send("Hello, Node.js Backend is running!");
 });
